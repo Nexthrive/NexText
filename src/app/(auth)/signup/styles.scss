@@ -18,6 +18,7 @@ form {
 	width: 27%;
 
 	.form-header {
+		position: relative;
 		display: flex;
 		justify-content: center;
 		align-items: center;
@@ -30,9 +31,14 @@ form {
 		margin-bottom: 70px;
 
 		.nextext {
-			position: fixed;
-			width: 7%;
-			top: 75px;
+			position: absolute;
+			width: 30%; /* Set the width as a percentage */
+			max-width: 150px; /* Set a maximum width if needed */
+			height: auto; /* Maintain the aspect ratio */
+			max-height: 150px; /* Set a maximum height if needed */
+			top: -170px; /* Set the top position as a percentage */
+			left: 50%;
+			transform: translateX(-50%);
 		}
 	}
 
@@ -63,11 +69,21 @@ form {
 		button {
 			background-color: $primary-color;
 			color: #fff;
-			padding: 12px 75px;
+			height: 55px;
+			width: 75%;
 			border-radius: 7px;
 			font-family: "Kanit";
 			font-weight: 500;
 			letter-spacing: 8px;
+			transition: all 0.3s ease-in-out;
+			outline: 3px solid transparent;
+
+			&:hover {
+				letter-spacing: 5px;
+				background-color: transparent;
+				outline: 3px solid $primary-color;
+				color: $primary-color;
+			}
 		}
 	}
 }
