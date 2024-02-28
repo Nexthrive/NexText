@@ -1,0 +1,102 @@
+@import "./variables.module.scss";
+
+.container-center {
+	width: 100vw;
+	height: 100vh;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.landing-container {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	padding: 200px 50px;
+	border-radius: 10px;
+	border: 6px solid $primary-color;
+	width: 50%;
+
+	.nextext {
+		position: absolute;
+		top: 100px;
+		max-width: 150px;
+	}
+
+	.form-header {
+		position: relative;
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		align-items: flex-start;
+		width: 100%;
+		font-family: "Kanit";
+		font-weight: 400;
+		font-size: 1.6rem;
+		letter-spacing: 7px;
+
+		h1 {
+			font-size: 5rem;
+			font-weight: 700;
+			color: $primary-color;
+			letter-spacing: -2.1px;
+			line-height: 70px;
+		}
+	}
+
+	.form-btn {
+		width: 100%;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		flex-direction: column;
+
+		.link {
+			width: 100%;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+
+			.btn {
+				background-color: $primary-color;
+				color: #fff;
+				height: 55px;
+				width: 75%;
+				border-radius: 7px;
+				font-family: "Kanit";
+				font-weight: 500;
+				letter-spacing: 8px;
+				transition: all 0.3s ease-in-out;
+				outline: 3px solid transparent;
+				margin-bottom: 20px;
+
+				&:hover {
+					letter-spacing: 5px;
+					background-color: transparent;
+					outline: 3px solid $primary-color;
+					color: $primary-color;
+				}
+			}
+
+			.btn-login {
+				background-color: transparent;
+				color: $primary-color;
+				height: 55px;
+				width: 75%;
+				border-radius: 7px;
+				font-family: "Kanit";
+				font-weight: 500;
+				letter-spacing: 8px;
+				transition: all 0.3s ease-in-out;
+				outline: 3px solid $primary-color;
+
+				&:hover {
+					letter-spacing: 5px;
+					background-color: $primary-color;
+					outline: 3px solid transparent;
+					color: #fff;
+				}
+			}
+		}
+	}
+}
