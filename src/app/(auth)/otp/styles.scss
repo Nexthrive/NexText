@@ -1,0 +1,96 @@
+@import "../../variables.module.scss";
+
+.container-center {
+	width: 100vw;
+	height: 100vh;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+form {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	padding: 89px 50px;
+	border-radius: 10px;
+	border: 6px solid $primary-color;
+	width: 30%;
+
+	.form-header {
+		position: relative;
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		align-items: center;
+		margin-bottom: 70px;
+
+		h1 {
+			width: 100%;
+			text-align: center;
+			font-family: "Kanit";
+			font-weight: 700;
+			font-size: 3.1rem;
+			letter-spacing: -2.1px;
+			text-decoration: underline 5px solid $primary-color;
+		}
+
+		p {
+			font-size: 1rem;
+			letter-spacing: 0;
+			font-family: "Poppins";
+			text-align: center;
+			color: #6e6e6e;
+
+			span {
+				font-weight: 700;
+			}
+		}
+
+		.nextext {
+			position: absolute;
+			width: 30%; /* Set the width as a percentage */
+			max-width: 150px; /* Set a maximum width if needed */
+			height: auto; /* Maintain the aspect ratio */
+			max-height: 150px; /* Set a maximum height if needed */
+			top: -150px; /* Set the top position as a percentage */
+			left: 50%;
+			transform: translateX(-50%);
+		}
+	}
+
+	.form-inputs {
+		width: 100%;
+		margin-bottom: 70px;
+	}
+
+	.otp {
+		background-color: red;
+	}
+	.form-btn {
+		width: 100%;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+
+		button {
+			background-color: $primary-color;
+			color: #fff;
+			height: 55px;
+			width: 75%;
+			border-radius: 7px;
+			font-family: "Kanit";
+			font-weight: 500;
+			letter-spacing: 8px;
+			transition: all 0.3s ease-in-out;
+			outline: 3px solid transparent;
+
+			&:hover {
+				letter-spacing: 5px;
+				background-color: transparent;
+				outline: 3px solid $primary-color;
+				color: $primary-color;
+			}
+		}
+	}
+}
