@@ -100,3 +100,83 @@
 		}
 	}
 }
+
+@media only screen and (max-width: 1000px) {
+	.landing-container {
+		flex-direction: column;
+		justify-content: center;
+		align-items: center;
+
+		.form-header {
+			margin-bottom: 50px;
+			justify-content: center;
+			align-items: center;
+
+			h1 {
+				font-size: 3rem;
+				text-align: center;
+			}
+
+			p {
+				font-size: 1rem;
+			}
+		}
+
+		.nextext {
+			top: 10px;
+		}
+	}
+}
+
+@media only screen and (max-width: 800px) {
+	.landing-container {
+		width: 80%;
+		padding: 150px 20px;
+
+		.form-header {
+			h1 {
+				font-size: 4rem;
+				line-height: 60px;
+			}
+		}
+
+		.form-btn {
+			.link {
+				.btn,
+				.btn-login {
+					width: 90%;
+				}
+			}
+		}
+
+		.nextext {
+			top: 60px;
+		}
+	}
+}
+
+@media only screen and (max-width: 600px) {
+	.landing-container {
+		width: 90%;
+		padding: 100px 10px;
+
+		.form-header {
+			h1 {
+				font-size: 3rem;
+				line-height: 50px;
+			}
+		}
+
+		.form-btn {
+			.link {
+				.btn,
+				.btn-login {
+					width: 100%;
+				}
+			}
+		}
+		.nextext {
+			top: 110px;
+		}
+	}
+}

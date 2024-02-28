@@ -8,14 +8,17 @@ import NexText from "../../../../public/NexText.png";
 import OtpInput from "react-otp-input";
 
 import "./styles.scss";
+import Link from "next/link";
 
 export default function Otp() {
 	const [otp, setOtp] = useState("");
 
-	const signup = async () => {
-		console.log(setOtp);
+	const verify = async () => {
 		try {
-			const res = await axios.post("some/api", {});
+			const res = await axios.post("some/api", {
+				email: "some@example.com",
+				otp: otp,
+			});
 
 			console.log(res);
 		} catch (err) {
@@ -26,13 +29,15 @@ export default function Otp() {
 	return (
 		<>
 			<div className="container-center">
-				<form onSubmit={signup}>
+				<form onSubmit={verify}>
 					<div className="form-header">
 						<Image src={NexText} alt="" className="nextext" />
 						<h1>Verify OTP !</h1>
 						<p>
 							We sent a verification code to your email <br />
 							<span>nur***@***.*om</span>
+							<br />
+							<Link href="/signup"> wrong email?</Link>
 						</p>
 					</div>
 					<div className="form-inputs">
@@ -40,7 +45,6 @@ export default function Otp() {
 							value={otp}
 							onChange={setOtp}
 							numInputs={6}
-							renderSeparator={<span>-</span>}
 							renderInput={(props) => <input {...props} />}
 							inputType="number"
 							containerStyle={{
