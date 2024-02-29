@@ -183,7 +183,7 @@ export default function Chat() {
           </section>
           <div className="separator"></div>
           <section className="message-section">
-
+            <img src="../../../../public/bg-patern.png" alt="" className="bg"/>
             <div className="message-receive">
               <p className="message">Bang guah dah di depan</p>
               <p className="message">ok sip</p>
