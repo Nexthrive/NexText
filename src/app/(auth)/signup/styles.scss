@@ -23,12 +23,14 @@ form {
 		justify-content: center;
 		align-items: center;
 		width: 100%;
-		font-family: "Kanit";
+		font-family: Kanit;
 		font-weight: 700;
 		font-size: 3.1rem;
 		letter-spacing: -2.1px;
 		text-decoration: underline 5px solid $primary-color;
 		margin-bottom: 70px;
+
+    
 
 		.nextext {
 			position: absolute;
