@@ -37,7 +37,6 @@ export default function Otp() {
 							We sent a verification code to your email <br />
 							<span>nur***@***.*om</span>
 							<br />
-							<Link href="/signup"> wrong email?</Link>
 						</p>
 					</div>
 					<div className="form-inputs">
