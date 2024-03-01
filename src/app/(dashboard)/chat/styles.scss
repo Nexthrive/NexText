@@ -74,10 +74,11 @@ body {
 
 .message-section {
 	width: 100%;
-	background-color: red;
 	flex-direction: column;
 	padding: 0 49px;
 	margin-top: 100px;
+	margin-bottom: 100px;
+	height: 100vh;
 }
 
 .my-message {

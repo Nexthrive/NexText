@@ -1,26 +1,33 @@
 "use client";
 
 import Image from "next/image";
-import React, { useRef, useState } from "react";
+import React, { use, useRef, useState } from "react";
+import { useRouter } from "next/navigation";
 import axios from "axios";
 import NexText from "../../../../public/NexText.png";
-
 import OtpInput from "react-otp-input";
-
 import "./styles.scss";
-import Link from "next/link";
 
 export default function Otp() {
-	const [otp, setOtp] = useState("");
+	const apiUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
 
-	const verify = async () => {
+	const [otp, setOtp] = useState("");
+	const Email = localStorage.getItem("signupEmail");
+
+	const router = useRouter();
+
+	const verify = async (event: React.FormEvent<HTMLFormElement>) => {
+		event.preventDefault();
 		try {
-			const res = await axios.post("some/api", {
-				email: "some@example.com",
-				otp: otp,
+			const res = await axios.post(`${apiUrl}/verify-otp`, {
+				email: Email,
+				otp: +otp,
 			});
 
 			console.log(res);
+			alert("Account verified successfully");
+			localStorage.removeItem("signupEmail");
+			router.push("/chat");
 		} catch (err) {
 			console.log(err);
 		}
@@ -35,7 +42,7 @@ export default function Otp() {
 						<h1>Verify OTP !</h1>
 						<p>
 							We sent a verification code to your email <br />
-							<span>nur***@***.*om</span>
+							<span>{Email}</span>
 							<br />
 						</p>
 					</div>

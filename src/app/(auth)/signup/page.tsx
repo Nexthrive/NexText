@@ -2,6 +2,7 @@
 
 import { Input, InputGroup, InputRightElement, Button } from "@chakra-ui/react";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import React, { useRef } from "react";
 import axios from "axios";
 import NexText from "../../../../public/NexText.png";
@@ -9,6 +10,8 @@ import NexText from "../../../../public/NexText.png";
 import "./styles.scss";
 
 export default function Signup() {
+	const apiUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
+
 	const [show, setShow] = React.useState(false);
 	const handleClick = () => setShow(!show);
 
@@ -17,20 +20,34 @@ export default function Signup() {
 	const Password = useRef<HTMLInputElement>(null);
 	const CPassword = useRef<HTMLInputElement>(null);
 
-	const signup = async () => {
+	const router = useRouter();
+
+	const signup = async (event: React.FormEvent<HTMLFormElement>) => {
+		event.preventDefault();
 		try {
 			if (Password.current?.value !== CPassword.current?.value) {
 				console.log("Passwords do not match");
 				return;
 			}
 
-			const res = await axios.post("some/api", {
-				username: Username?.current?.value,
-				email: Email?.current?.value,
-				password: Password?.current?.value,
+			const name = Username.current?.value ?? "";
+			const email = Email.current?.value ?? "";
+			const password = Password.current?.value ?? "";
+
+			console.log(name, email, password);
+
+			const res = await axios.post(`${apiUrl}/signup`, {
+				name,
+				email,
+				password,
 			});
 
 			console.log(res);
+			alert("Account created successfully");
+
+			localStorage.setItem("signupEmail", email);
+
+			router.push("/otp");
 		} catch (err) {
 			console.log(err);
 		}
@@ -51,6 +68,7 @@ export default function Signup() {
 								variant=""
 								type="text"
 								placeholder="Username"
+								ref={Username}
 							/>
 						</div>
 						<div className="input">
@@ -59,6 +77,7 @@ export default function Signup() {
 								variant=""
 								type="text"
 								placeholder="Email"
+								ref={Email}
 							/>
 						</div>
 						<div className="input">
@@ -68,6 +87,7 @@ export default function Signup() {
 									type={show ? "text" : "password"}
 									placeholder="Password"
 									className="my-input"
+									ref={Password}
 								/>
 								<InputRightElement width="4.5rem">
 									<Button h="1.75rem" size="sm" onClick={handleClick}>
@@ -83,6 +103,7 @@ export default function Signup() {
 									type={show ? "text" : "password"}
 									placeholder="Confrim Password"
 									className="my-input"
+									ref={CPassword}
 								/>
 							</InputGroup>
 						</div>

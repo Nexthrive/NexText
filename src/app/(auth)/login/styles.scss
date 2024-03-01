@@ -1,4 +1,172 @@
-.draw {
-	position: relative;
-	background-color: red;
+@import "../../variables.module.scss";
+
+.container-center {
+	width: 100vw;
+	height: 100vh;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+form {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	padding: 89px 50px;
+	border-radius: 10px;
+	border: 6px solid $primary-color;
+	width: 27%;
+
+	.form-header {
+		position: relative;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		width: 100%;
+		font-family: Kanit;
+		font-weight: 700;
+		font-size: 3.1rem;
+		letter-spacing: -2.1px;
+		text-decoration: underline 5px solid $primary-color;
+		margin-bottom: 70px;
+
+		.nextext {
+			position: absolute;
+			width: 30%; /* Set the width as a percentage */
+			max-width: 150px; /* Set a maximum width if needed */
+			height: auto; /* Maintain the aspect ratio */
+			max-height: 150px; /* Set a maximum height if needed */
+			top: -170px; /* Set the top position as a percentage */
+			left: 50%;
+			transform: translateX(-50%);
+		}
+	}
+
+	.form-inputs {
+		width: 100%;
+		margin-bottom: 50px;
+
+		.input {
+			width: 100%;
+			margin-bottom: 20px;
+			color: $primary-color;
+			transition: all 0.3s ease-in-out;
+
+			.my-input {
+				outline: 3px solid $primary-color;
+				width: 100%;
+				border-radius: 2px;
+			}
+		}
+	}
+
+	.form-btn {
+		width: 100%;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+
+		button {
+			background-color: $primary-color;
+			color: #fff;
+			height: 55px;
+			width: 75%;
+			border-radius: 7px;
+			font-family: "Kanit";
+			font-weight: 500;
+			letter-spacing: 8px;
+			transition: all 0.3s ease-in-out;
+			outline: 3px solid transparent;
+
+			&:hover {
+				letter-spacing: 5px;
+				background-color: transparent;
+				outline: 3px solid $primary-color;
+				color: $primary-color;
+			}
+		}
+	}
+}
+
+@media only screen and (max-width: 1000px) {
+	form {
+		width: 40%;
+		padding: 70px 30px;
+
+		.form-header {
+			margin-bottom: 50px;
+
+			.nextext {
+				width: 40%;
+				max-width: 120px;
+				top: -140px;
+			}
+		}
+
+		.form-inputs {
+			margin-bottom: 40px;
+		}
+
+		.form-btn {
+			button {
+				width: 80%;
+			}
+		}
+	}
+}
+
+@media only screen and (max-width: 800px) {
+	form {
+		width: 50%;
+		padding: 50px 20px;
+
+		.form-header {
+			font-size: 2.5rem;
+			margin-bottom: 40px;
+
+			.nextext {
+				width: 50%;
+				max-width: 100px;
+				top: -120px;
+			}
+		}
+
+		.form-inputs {
+			margin-bottom: 30px;
+		}
+
+		.form-btn {
+			button {
+				width: 90%;
+			}
+		}
+	}
+}
+
+@media only screen and (max-width: 600px) {
+	form {
+		width: 70%;
+		padding: 40px 15px;
+
+		.form-header {
+			font-size: 2rem;
+			margin-bottom: 30px;
+
+			.nextext {
+				width: 60%;
+				max-width: 80px;
+				top: -100px;
+			}
+		}
+
+		.form-inputs {
+			margin-bottom: 20px;
+		}
+
+		.form-btn {
+			button {
+				width: 100%;
+			}
+		}
+	}
 }
