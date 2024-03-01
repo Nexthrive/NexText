@@ -9,13 +9,15 @@ body {
 	display: flex;
 	flex-direction: column;
 	align-items: center;
+	// padding: 38px 0;
 	width: 100%;
 	height: 100vh;
+	z-index: 1;
 }
 
 .profile-section {
 	position: fixed;
-	width: 100%;
+	width: 80%;
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
@@ -76,9 +78,14 @@ body {
 	width: 100%;
 	flex-direction: column;
 	padding: 0 49px;
-	margin-top: 100px;
+	padding-top: 100px;
 	margin-bottom: 100px;
-	height: 100vh;
+	// background: radial-gradient(circle at 25% 25%, transparent 14%, #e5e5e5 15%, #e5e5e5 20%, transparent 21%, transparent 100%), radial-gradient(circle at 75% 75%, transparent 11%, #e5e5e5 12%, #e5e5e5 17%, transparent 18%);
+	// background-size: 1em 1em;
+	// background-color: #ffffff;
+	// opacity: 1;
+	background-image: url(../../../../public/bg-patern.png);
+	background-size: 100%;
 }
 
 .my-message {
@@ -93,7 +100,7 @@ body {
 .time,
 .typing-indicator {
 	color: #000;
-	background: f9f9f9;
+	// background: f9f9f9;
 	font-size: 14px;
 	font-weight: 400;
 	padding: 16px 0;
@@ -134,15 +141,13 @@ body {
 }
 
 .message-input-section {
-	// box-shadow: -7px 1px 100px 1px #fff;
-	// box-shadow: -7px 68px 100px 51px #fff;
 	position: fixed;
 	display: flex;
 	justify-content: space-between;
 	gap: 20px;
 	border-radius: 7px;
-	background-color: #f9f9f9;
-	width: 95%;
+	background-color: #f1f1f1;
+	width: 75%;
 	margin-bottom: 20px;
 	bottom: 0;
 }
@@ -153,6 +158,12 @@ body {
 	flex-grow: 1;
 	border: none;
 	background-color: transparent;
+	border-radius: 7px;
+}
+
+.message-input:focus {
+	outline: none;
+	border-color: transparent;
 }
 
 .send-button {
@@ -168,4 +179,219 @@ body {
 .icon {
 	fill: #fff;
 	width: 18px;
+}
+
+.wrapper {
+	display: flex;
+	width: 100%;
+}
+
+.chat-container {
+	width: 80%;
+	margin-left: 20%;
+}
+
+.side-nav {
+	min-width: 20%;
+	height: 100vh;
+	background-color: #000;
+	z-index: 2;
+	position: fixed;
+	left: 0;
+	overflow-y: auto;
+}
+
+.nav-container {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	width: 100%;
+}
+
+.search-section {
+	margin-top: 60px;
+	display: flex;
+	gap: 12px;
+	justify-content: space-between;
+	padding: 20px 20px;
+	// position: fixed;
+}
+
+.search-box {
+	background-color: #222;
+	color: #fff;
+	padding: 5px 7px;
+	border-radius: 5px;
+	width: 100%;
+	font-size: 12px;
+}
+
+.search-box:focus {
+	outline: none;
+	border-color: transparent;
+}
+
+.add-friend {
+	background-color: #0000ff;
+	padding-bottom: 2px;
+	padding-top: 3px;
+	padding-right: 10px;
+	padding-left: 10px;
+	color: #fff;
+	border-radius: 100px;
+}
+
+.friend-section {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: space-between;
+	gap: 20px;
+	padding: 20px 40px;
+}
+
+.card-friend {
+	display: flex;
+	gap: 20px;
+	justify-content: center;
+	// padding-left: 30px;
+	width: 100%;
+	align-items: center;
+	margin-bottom: 10px;
+	cursor: pointer;
+	padding: 10px;
+	border-radius: 10px;
+	transition: all 0.2s ease-out;
+}
+
+.card-friend:hover {
+	background-color: rgba(255, 255, 255, 0.1);
+}
+
+.friend-info {
+	display: flex;
+	flex-direction: column;
+	width: 100%;
+}
+
+.name {
+	display: flex;
+	color: #fff;
+	font-weight: 700;
+	font-size: 14px;
+	justify-content: space-between;
+	align-items: center;
+}
+
+.nama {
+	width: 80%;
+}
+
+.status {
+	width: 20%;
+	float: right;
+}
+
+.chat {
+	color: #999999;
+	font-size: 11px;
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+}
+
+.profil {
+	width: 50px;
+	height: 50px;
+	aspect-ratio: 1/1;
+	border-radius: 50%;
+}
+
+.time {
+	padding: 0;
+	margin: 0;
+}
+
+.chat-send {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+
+.chat {
+	width: 80%;
+}
+
+.notif {
+	font-size: 9px;
+	background-color: #0000ff;
+	border-radius: 50%;
+	padding-bottom: 2px;
+	padding-top: 3px;
+	padding-right: 6px;
+	padding-left: 6px;
+	color: #fff;
+}
+
+// .overlay {
+// 	position: fixed;
+// 	width: 100vw;
+// 	height: 100%;
+// 	background-color: red;
+// 	z-index: -1;
+// }
+
+// Add these styles to your existing styles.scss file
+
+@media screen and (max-width: 768px) {
+	.side-nav {
+		min-width: 0;
+		width: 100%;
+	}
+
+	.nav-container {
+		flex-direction: column;
+		align-items: flex-start;
+		padding: 20px;
+	}
+
+	.search-section {
+		flex-direction: column;
+		gap: 10px;
+		align-items: flex-start;
+	}
+
+	.search-box {
+		width: 100%;
+	}
+
+	.friends-section {
+		width: 100%;
+	}
+
+	.card-friend {
+		flex-direction: column;
+		align-items: flex-start;
+	}
+
+	.friend-info {
+		width: 100%;
+	}
+
+	.name {
+		width: 100%;
+		justify-content: flex-start;
+	}
+
+	.status {
+		width: 100%;
+		float: none;
+		margin-top: 5px;
+	}
+
+	.chat-container {
+		width: 100%;
+		margin-left: 0;
+	}
 }
