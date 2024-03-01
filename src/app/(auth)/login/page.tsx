@@ -8,29 +8,30 @@ import NexText from "../../../../public/NexText.png";
 
 import "./styles.scss";
 
-export default function Signup() {
+export default function Login() {
+	const apiUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
 	const [show, setShow] = React.useState(false);
 	const handleClick = () => setShow(!show);
 
-	const Username = useRef<HTMLInputElement>(null);
 	const Email = useRef<HTMLInputElement>(null);
 	const Password = useRef<HTMLInputElement>(null);
-	const CPassword = useRef<HTMLInputElement>(null);
 
-	const signup = async () => {
+	const login = async (event: React.FormEvent<HTMLFormElement>) => {
+		event.preventDefault();
 		try {
-			if (Password.current?.value !== CPassword.current?.value) {
-				console.log("Passwords do not match");
-				return;
-			}
+			const email = Email.current?.value ?? "";
+			const password = Password.current?.value ?? "";
 
-			const res = await axios.post("some/api", {
-				username: Username?.current?.value,
-				email: Email?.current?.value,
-				password: Password?.current?.value,
+			const res = await axios.post(`${apiUrl}/login`, {
+				email: email,
+				passphrase: password,
 			});
 
-			console.log(res);
+			const jwt = res.data.token;
+
+			localStorage.setItem("jwt", jwt);
+
+			alert("Logged in successfully");
 		} catch (err) {
 			console.log(err);
 		}
@@ -39,10 +40,10 @@ export default function Signup() {
 	return (
 		<>
 			<div className="container-center">
-				<form onSubmit={signup}>
+				<form onSubmit={login}>
 					<div className="form-header">
 						<Image src={NexText} alt="" className="nextext" />
-						<h1>Sign In !</h1>
+						<h1>Log In !</h1>
 					</div>
 					<div className="form-inputs">
 						<div className="input">
@@ -51,6 +52,7 @@ export default function Signup() {
 								variant=""
 								type="text"
 								placeholder="Email"
+								ref={Email}
 							/>
 						</div>
 						<div className="input">
@@ -60,6 +62,7 @@ export default function Signup() {
 									type={show ? "text" : "password"}
 									placeholder="Password"
 									className="my-input"
+									ref={Password}
 								/>
 								<InputRightElement width="4.5rem">
 									<Button h="1.75rem" size="sm" onClick={handleClick}>

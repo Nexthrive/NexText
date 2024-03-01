@@ -1,9 +1,38 @@
-// import styles from "./page.module.css";
+"use client";
+
 import "./styles.scss";
+import { useState, useEffect } from "react";
 import Profil from "../../../../public/profil.jpg";
 import Image from "next/image";
 
+import axios from "axios";
+
 export default function Chat() {
+	const [friendsData, setFriendsData] = useState([]);
+
+	useEffect(() => {
+		const getFriends = async () => {
+			try {
+				const token = localStorage.getItem("jwt");
+				const apiUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
+
+				const res = await axios.get(`${apiUrl}/friends/list`, {
+					headers: {
+						Authorization: `${token}`,
+					},
+				});
+
+				setFriendsData(res.data.friends);
+
+				console.log(res.data.friends);
+			} catch (err) {
+				console.log(err);
+			}
+		};
+
+		getFriends();
+	}, []);
+
 	return (
 		<div className="wrapper">
 			<div className="side-nav">
@@ -19,145 +48,21 @@ export default function Chat() {
 
 					<div className="friends-section">
 						<div className="friends-container">
-							<div className="card-friend">
-								<Image src={Profil} alt="" className="profil" />
-								<div className="friend-info">
-									<div className="name">
-										<h1 className="nama">Aldi Yusron</h1>
-										<p className="time">12:00PM</p>
-									</div>
-									<div className="chat-send">
-										<div className="chat">Lorem ipsum dolor sit amet...</div>
-										<div className="notif">2</div>
-									</div>
-								</div>
-							</div>
-
-							<div className="card-friend">
-								<Image src={Profil} alt="" className="profil" />
-								<div className="friend-info">
-									<div className="name">
-										<h1 className="nama">Aldi Yusron</h1>
-										<p className="time">12:00PM</p>
-									</div>
-									<div className="chat-send">
-										<div className="chat">Lorem ipsum dolor sit amet...</div>
-										<div className="notif">2</div>
+							{((friendsData as any[]) || []).map((friend) => (
+								<div key={friend.id} className="card-friend">
+									<Image src={Profil} alt="" className="profil" />
+									<div className="friend-info">
+										<div className="name">
+											<h1 className="nama">{friend.name}</h1>
+											<p className="time">12:00PM</p>
+										</div>
+										<div className="chat-send">
+											<div className="chat">Lorem ipsum dolor sit amet...</div>
+											<div className="notif">2</div>
+										</div>
 									</div>
 								</div>
-							</div>
-
-							<div className="card-friend">
-								<Image src={Profil} alt="" className="profil" />
-								<div className="friend-info">
-									<div className="name">
-										<h1 className="nama">Aldi Yusron</h1>
-										<p className="time">12:00PM</p>
-									</div>
-									<div className="chat-send">
-										<div className="chat">Lorem ipsum dolor sit amet...</div>
-										<div className="notif">2</div>
-									</div>
-								</div>
-							</div>
-
-							<div className="card-friend">
-								<Image src={Profil} alt="" className="profil" />
-								<div className="friend-info">
-									<div className="name">
-										<h1 className="nama">Aldi Yusron</h1>
-										<p className="time">12:00PM</p>
-									</div>
-									<div className="chat-send">
-										<div className="chat">Lorem ipsum dolor sit amet...</div>
-										<div className="notif">2</div>
-									</div>
-								</div>
-							</div>
-
-							<div className="card-friend">
-								<Image src={Profil} alt="" className="profil" />
-								<div className="friend-info">
-									<div className="name">
-										<h1 className="nama">Aldi Yusron</h1>
-										<p className="time">12:00PM</p>
-									</div>
-									<div className="chat-send">
-										<div className="chat">Lorem ipsum dolor sit amet...</div>
-										<div className="notif">2</div>
-									</div>
-								</div>
-							</div>
-
-							<div className="card-friend">
-								<Image src={Profil} alt="" className="profil" />
-								<div className="friend-info">
-									<div className="name">
-										<h1 className="nama">Aldi Yusron</h1>
-										<p className="time">12:00PM</p>
-									</div>
-									<div className="chat-send">
-										<div className="chat">Lorem ipsum dolor sit amet...</div>
-										<div className="notif">2</div>
-									</div>
-								</div>
-							</div>
-
-							<div className="card-friend">
-								<Image src={Profil} alt="" className="profil" />
-								<div className="friend-info">
-									<div className="name">
-										<h1 className="nama">Aldi Yusron</h1>
-										<p className="time">12:00PM</p>
-									</div>
-									<div className="chat-send">
-										<div className="chat">Lorem ipsum dolor sit amet...</div>
-										<div className="notif">2</div>
-									</div>
-								</div>
-							</div>
-
-							<div className="card-friend">
-								<Image src={Profil} alt="" className="profil" />
-								<div className="friend-info">
-									<div className="name">
-										<h1 className="nama">Aldi Yusron</h1>
-										<p className="time">12:00PM</p>
-									</div>
-									<div className="chat-send">
-										<div className="chat">Lorem ipsum dolor sit amet...</div>
-										<div className="notif">2</div>
-									</div>
-								</div>
-							</div>
-
-							<div className="card-friend">
-								<Image src={Profil} alt="" className="profil" />
-								<div className="friend-info">
-									<div className="name">
-										<h1 className="nama">Aldi Yusron</h1>
-										<p className="time">12:00PM</p>
-									</div>
-									<div className="chat-send">
-										<div className="chat">Lorem ipsum dolor sit amet...</div>
-										<div className="notif">2</div>
-									</div>
-								</div>
-							</div>
-
-							<div className="card-friend">
-								<Image src={Profil} alt="" className="profil" />
-								<div className="friend-info">
-									<div className="name">
-										<h1 className="nama">Aldi Yusron</h1>
-										<p className="time">12:00PM</p>
-									</div>
-									<div className="chat-send">
-										<div className="chat">Lorem ipsum dolor sit amet...</div>
-										<div className="notif">2</div>
-									</div>
-								</div>
-							</div>
+							))}
 						</div>
 					</div>
 				</div>
