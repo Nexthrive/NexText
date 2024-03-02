@@ -49,7 +49,7 @@ export default function Landing() {
 						<Link href="/signup" className="link">
 							<button className="btn">REGISTER</button>
 						</Link>
-						<Link href="/signup" className="link">
+						<Link href="/login" className="link">
 							<button className="btn-login">SIGN IN</button>
 						</Link>
 					</div>

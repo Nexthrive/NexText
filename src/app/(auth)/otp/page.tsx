@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import axios from "axios";
 import NexText from "../../../../public/NexText.png";
 import OtpInput from "react-otp-input";
+import { parse, serialize } from "cookie";
 import "./styles.scss";
 
 export default function Otp() {
@@ -24,12 +25,22 @@ export default function Otp() {
 				otp: +otp,
 			});
 
-			console.log(res);
+			const jwt = res.data.token;
+
+			// Set JWT in a secure, HTTP-only cookie
+			document.cookie = serialize("jwt", jwt, {
+				httpOnly: true,
+				secure: process.env.NODE_ENV === "production", // Set to true in production
+				sameSite: "strict",
+				maxAge: 3600, // Token expiration time in seconds
+				path: "/", // Adjust the path as needed
+			});
+
 			alert("Account verified successfully");
 			localStorage.removeItem("signupEmail");
 			router.push("/chat");
 		} catch (err) {
-			console.log(err);
+			console.error(err);
 		}
 	};
 

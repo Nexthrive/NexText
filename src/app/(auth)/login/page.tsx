@@ -3,6 +3,8 @@
 import { Input, InputGroup, InputRightElement, Button } from "@chakra-ui/react";
 import Image from "next/image";
 import React, { useRef } from "react";
+import { useRouter } from "next/navigation";
+import Cookies from "js-cookie";
 import axios from "axios";
 import NexText from "../../../../public/NexText.png";
 
@@ -10,6 +12,7 @@ import "./styles.scss";
 
 export default function Login() {
 	const apiUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
+	const router = useRouter();
 	const [show, setShow] = React.useState(false);
 	const handleClick = () => setShow(!show);
 
@@ -29,9 +32,11 @@ export default function Login() {
 
 			const jwt = res.data.token;
 
-			localStorage.setItem("jwt", jwt);
+			Cookies.set("jwt", jwt);
 
 			alert("Logged in successfully");
+
+			router.push("/chat");
 		} catch (err) {
 			console.log(err);
 		}
