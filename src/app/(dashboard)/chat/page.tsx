@@ -48,7 +48,7 @@ export default function Chat() {
 				setMessages([]);
 
 				const socketInstance = new WebSocket(
-					`ws://localhost:8080/ws/${decoded.id}/${selectedFriendId}`
+					`${wsUrl}/${decoded.id}/${selectedFriendId}`
 				);
 
 				setSocket(socketInstance);
