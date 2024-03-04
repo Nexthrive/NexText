@@ -30,10 +30,10 @@ export default function Otp() {
 			// Set JWT in a secure, HTTP-only cookie
 			document.cookie = serialize("jwt", jwt, {
 				httpOnly: true,
-				secure: process.env.NODE_ENV === "production", // Set to true in production
+				secure: process.env.NODE_ENV === "production", 
 				sameSite: "strict",
-				maxAge: 3600, // Token expiration time in seconds
-				path: "/", // Adjust the path as needed
+				maxAge: 3600, 
+				path: "/", 
 			});
 
 			alert("Account verified successfully");
