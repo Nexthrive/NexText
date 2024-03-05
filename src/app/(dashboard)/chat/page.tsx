@@ -15,7 +15,7 @@ interface Friend {
 
 interface Message {
 	text: string;
-	receiver_id: string;
+	receiverID: string;
 	timestamp: Date;
 }
 
@@ -69,13 +69,11 @@ export default function Chat({}: ChatProps) {
 			socketInstance.addEventListener("message", (event) => {
 				const wsMessage = JSON.parse(event.data);
 
-				console.log(wsMessage);
-
 				if (wsMessage.text.trim() !== "") {
 					const newMessage: Message = {
 						text: wsMessage.text,
-						receiver_id: selectedFriendId, // Update receiver_id based on sender's ID
-						timestamp: new Date(wsMessage.timestamp), // Convert timestamp to Date object
+						receiverID: wsMessage.receiver, // Use the receiverID from WebSocket message
+						timestamp: new Date(wsMessage.timestamp),
 					};
 
 					setMessages((prevMessages) => [...prevMessages, newMessage]);
@@ -121,7 +119,7 @@ export default function Chat({}: ChatProps) {
 
 			const newMessage: Message = {
 				text: messageInput,
-				receiver_id: userID!, // Set the actual sender's ID and assert it is not null
+				receiverID: selectedFriendId!, // Set the actual sender's ID and assert it is not null
 				timestamp: new Date(),
 			};
 
@@ -206,9 +204,9 @@ export default function Chat({}: ChatProps) {
 								<div
 									key={index}
 									className={`${
-										message.receiver_id === userID
-											? "my-message"
-											: "other-message"
+										message.receiverID === userID
+											? "other-message"
+											: "my-message"
 									}`}
 								>
 									{message.text.trim() !== "" && (
@@ -216,9 +214,9 @@ export default function Chat({}: ChatProps) {
 											<p className="message">{message.text}</p>
 											<span
 												className={`time ${
-													message.receiver_id === userID
+													message.receiverID === userID
 														? "my-message-time"
-														: ""
+														: "other-message-time"
 												}`}
 											>
 												{formatTimestamp(message.timestamp)}
