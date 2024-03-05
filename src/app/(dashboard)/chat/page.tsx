@@ -7,6 +7,7 @@ import Image from "next/image";
 import Cookies from "js-cookie";
 import { jwtDecode } from "jwt-decode";
 import axios from "axios";
+import * as jwt from "jsonwebtoken";
 
 interface Friend {
 	id: string;
@@ -26,7 +27,9 @@ interface jwtPayload {
 	id: string;
 }
 
-export default function Chat() {
+interface ChatProps {}
+
+export default function Chat({}: ChatProps) {
 	const [friendsData, setFriendsData] = useState<Friend[]>([]);
 	const [selectedFriendId, setSelectedFriendId] = useState<string | null>(null);
 	const [messages, setMessages] = useState<Message[]>([]);
@@ -35,56 +38,36 @@ export default function Chat() {
 	const [userID, setUserID] = useState<string | null>(null);
 
 	useEffect(() => {
-		getFriends();
-		const wsUrl = process.env.NEXT_PUBLIC_WEBSOCKET_URL;
 		const jwt = Cookies.get("jwt");
 
 		if (jwt) {
 			const decoded = jwtDecode<jwtPayload>(jwt);
 			setUserID(decoded.id);
-
-			if (selectedFriendId) {
-				// Clean up messages when selectedFriendId changes
-				setMessages([]);
-
-				const socketInstance = new WebSocket(
-					`${wsUrl}/${decoded.id}/${selectedFriendId}`
-				);
-
-				setSocket(socketInstance);
-
-				socketInstance.addEventListener("open", () => {
-					console.log("WebSocket connection opened");
-				});
-
-				socketInstance.addEventListener("message", (event) => {
-					const parsedMessage = JSON.parse(event.data);
-					setMessages((prevMessages) => [
-						...prevMessages,
-						{
-							text: parsedMessage.text || parsedMessage.Text,
-							sender: parsedMessage.Sender,
-							timestamp: new Date(parsedMessage.Timestamp),
-						},
-					]);
-				});
-
-				socketInstance.addEventListener("close", () => {
-					console.log("WebSocket connection closed");
-				});
-
-				return () => {
-					if (socketInstance) {
-						socketInstance.close();
-					}
-				};
-			} else {
-				console.error("selectedFriendId is undefined.");
-			}
-		} else {
-			console.error("JWT token is undefined. Handle this case accordingly.");
+			getFriends();
 		}
-	}, [selectedFriendId]);
+	}, []); // Only run once to get initial friend list
+
+	useEffect(() => {
+		const wsUrl = process.env.NEXT_PUBLIC_WEBSOCKET_URL;
+
+		if (userID && selectedFriendId) {
+			const chatID = generateChatID(userID, selectedFriendId);
+			const socketInstance = new WebSocket(`${wsUrl}/${chatID}`);
+
+			// Include UserID and FriendID in WebSocket message payload
+			socketInstance.onopen = () => {
+				const payload = {
+					type: "init",
+					userID: userID,
+					friendID: selectedFriendId,
+				};
+
+				socketInstance.send(JSON.stringify(payload));
+
+				console.log("WebSocket connection opened with payload:", payload);
+			};
+		}
+	}, [selectedFriendId, userID]);
 
 	const getFriends = async () => {
 		try {
@@ -114,15 +97,33 @@ export default function Chat() {
 		if (socket) {
 			const message = {
 				text: messageInput,
-				sender: userID!,
+				receiver_id: selectedFriendId!,
 				timestamp: new Date(),
 			};
 			const jsonMessage = JSON.stringify(message);
 
 			socket.send(jsonMessage);
 
+			setMessages((prevMessages) => [
+				...prevMessages,
+				message as unknown as Message,
+			]);
+
 			setMessageInput("");
 		}
+	};
+
+	const generateChatID = (userID: string, friendID: string) => {
+		const payload = {
+			UserID: userID,
+			FriendID: friendID,
+		};
+
+		const token = jwt.sign(payload, "hehe", {
+			expiresIn: "1h",
+		});
+
+		return token;
 	};
 
 	return (
