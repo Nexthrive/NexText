@@ -7,17 +7,15 @@ import Image from "next/image";
 import Cookies from "js-cookie";
 import { jwtDecode } from "jwt-decode";
 import axios from "axios";
-import * as jwt from "jsonwebtoken";
 
 interface Friend {
 	id: string;
 	name: string;
-	// Add other friend properties as needed
 }
 
 interface Message {
 	text: string;
-	sender: string;
+	receiver_id: string;
 	timestamp: Date;
 }
 
@@ -45,17 +43,20 @@ export default function Chat({}: ChatProps) {
 			setUserID(decoded.id);
 			getFriends();
 		}
-	}, []); // Only run once to get initial friend list
+	}, []);
 
 	useEffect(() => {
 		const wsUrl = process.env.NEXT_PUBLIC_WEBSOCKET_URL;
 
 		if (userID && selectedFriendId) {
+			setMessages([]);
 			const chatID = generateChatID(userID, selectedFriendId);
-			const socketInstance = new WebSocket(`${wsUrl}/${chatID}`);
 
-			// Include UserID and FriendID in WebSocket message payload
-			socketInstance.onopen = () => {
+			const socketInstance = new WebSocket(
+				`${wsUrl}/${chatID}?UserID=${userID}&FriendID=${selectedFriendId}`
+			);
+
+			socketInstance.addEventListener("open", () => {
 				const payload = {
 					type: "init",
 					userID: userID,
@@ -63,9 +64,25 @@ export default function Chat({}: ChatProps) {
 				};
 
 				socketInstance.send(JSON.stringify(payload));
+			});
 
-				console.log("WebSocket connection opened with payload:", payload);
-			};
+			socketInstance.addEventListener("message", (event) => {
+				const wsMessage = JSON.parse(event.data);
+
+				console.log(wsMessage);
+
+				if (wsMessage.text.trim() !== "") {
+					const newMessage: Message = {
+						text: wsMessage.text,
+						receiver_id: selectedFriendId, // Update receiver_id based on sender's ID
+						timestamp: new Date(wsMessage.timestamp), // Convert timestamp to Date object
+					};
+
+					setMessages((prevMessages) => [...prevMessages, newMessage]);
+				}
+			});
+
+			setSocket(socketInstance);
 		}
 	}, [selectedFriendId, userID]);
 
@@ -94,36 +111,41 @@ export default function Chat({}: ChatProps) {
 	};
 
 	const sendTextMessage = () => {
-		if (socket) {
+		if (socket && selectedFriendId) {
 			const message = {
 				text: messageInput,
-				receiver_id: selectedFriendId!,
+				receiver_id: selectedFriendId as string, // Set the actual recipient's ID
+			};
+
+			socket.send(JSON.stringify(message));
+
+			const newMessage: Message = {
+				text: messageInput,
+				receiver_id: userID!, // Set the actual sender's ID and assert it is not null
 				timestamp: new Date(),
 			};
-			const jsonMessage = JSON.stringify(message);
 
-			socket.send(jsonMessage);
-
-			setMessages((prevMessages) => [
-				...prevMessages,
-				message as unknown as Message,
-			]);
+			setMessages((prevMessages) => [...prevMessages, newMessage]);
 
 			setMessageInput("");
 		}
 	};
 
 	const generateChatID = (userID: string, friendID: string) => {
-		const payload = {
-			UserID: userID,
-			FriendID: friendID,
-		};
+		const sortedIDs =
+			userID.localeCompare(friendID) < 0
+				? [userID, friendID]
+				: [friendID, userID];
 
-		const token = jwt.sign(payload, "hehe", {
-			expiresIn: "1h",
-		});
+		return sortedIDs.join("_");
+	};
 
-		return token;
+	const formatTimestamp = (timestamp: Date) => {
+		const hours = timestamp.getHours().toString().padStart(2, "0");
+		const minutes = timestamp.getMinutes().toString().padStart(2, "0");
+		const seconds = timestamp.getSeconds().toString().padStart(2, "0");
+
+		return `${hours}:${minutes}:${seconds}`;
 	};
 
 	return (
@@ -166,7 +188,6 @@ export default function Chat({}: ChatProps) {
 			</div>
 
 			<div className="chat-container">
-				<div className="overlay"></div>
 				<main className="container">
 					<section className="profile-section">
 						<div className="status-indicator"></div>
@@ -180,18 +201,30 @@ export default function Chat({}: ChatProps) {
 					</section>
 					<div className="separator"></div>
 					<section className="message-section">
-						<div className="message-receive">
+						<div className="messages">
 							{messages.map((message, index) => (
 								<div
 									key={index}
-									className={
-										message.sender === userID ? "my-message" : "other-message"
-									}
+									className={`${
+										message.receiver_id === userID
+											? "my-message"
+											: "other-message"
+									}`}
 								>
-									<p className="message">{message.text}</p>
-									<span className="time">
-										{/* Format and display timestamp as needed */}
-									</span>
+									{message.text.trim() !== "" && (
+										<>
+											<p className="message">{message.text}</p>
+											<span
+												className={`time ${
+													message.receiver_id === userID
+														? "my-message-time"
+														: ""
+												}`}
+											>
+												{formatTimestamp(message.timestamp)}
+											</span>
+										</>
+									)}
 								</div>
 							))}
 						</div>
