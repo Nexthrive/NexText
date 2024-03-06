@@ -7,6 +7,7 @@ import Image from "next/image";
 import Cookies from "js-cookie";
 import { jwtDecode } from "jwt-decode";
 import axios from "axios";
+import NexText from "../../../../public/NexText-W.png";
 
 interface Friend {
 	id: string;
@@ -34,6 +35,7 @@ export default function Chat({}: ChatProps) {
 	const [messageInput, setMessageInput] = useState<string>("");
 	const [socket, setSocket] = useState<WebSocket | null>(null);
 	const [userID, setUserID] = useState<string | null>(null);
+	const [searchInput, setSearchInput] = useState<string>("");
 
 	useEffect(() => {
 		const jwt = Cookies.get("jwt");
@@ -155,31 +157,57 @@ export default function Chat({}: ChatProps) {
 							type="text"
 							className="search-box"
 							placeholder="Search here..."
+							value={searchInput}
+							onChange={(e) => setSearchInput(e.target.value.toLowerCase())}
 						/>
+
 						<button className="add-friend">+</button>
 					</div>
 
 					<div className="friends-section">
 						<div className="friends-container">
-							{((friendsData as any[]) || []).map((friend) => (
-								<div
-									key={friend.id}
-									className="card-friend"
-									onClick={() => handleFriendClick(friend.id)}
-								>
-									<Image src={Profil} alt="" className="profil" />
-									<div className="friend-info">
-										<div className="name">
-											<h1 className="nama">{friend.name}</h1>
-											<p className="time">12:00PM</p>
+							{((friendsData as any[]) || []).map((friend) => {
+								const friendNameLower = friend.name.toLowerCase();
+
+								// Check if the friend name includes the search input
+								if (friendNameLower.includes(searchInput)) {
+									const friendMessages = messages
+										.filter(
+											(message) =>
+												(message.receiverID === userID &&
+													message.receiverID === friend.id) ||
+												(message.receiverID === friend.id &&
+													message.receiverID === userID)
+										)
+										.sort(
+											(a, b) => a.timestamp.getTime() - b.timestamp.getTime()
+										);
+
+									const lastMessage = friendMessages[friendMessages.length - 1];
+
+									return (
+										<div
+											key={friend.id}
+											className="card-friend"
+											onClick={() => handleFriendClick(friend.id)}
+										>
+											<Image src={Profil} alt="" className="profil" />
+											<div className="friend-info">
+												<div className="name">
+													<h1 className="nama">{friend.name}</h1>
+													<p className="time">
+														{lastMessage
+															? formatTimestamp(lastMessage.timestamp)
+															: ""}
+													</p>
+												</div>
+											</div>
 										</div>
-										<div className="chat-send">
-											<div className="chat">Lorem ipsum dolor sit amet...</div>
-											<div className="notif">2</div>
-										</div>
-									</div>
-								</div>
-							))}
+									);
+								}
+
+								return null; // Skip rendering if the friend doesn't match the search
+							})}
 						</div>
 					</div>
 				</div>
@@ -190,7 +218,12 @@ export default function Chat({}: ChatProps) {
 					<section className="profile-section">
 						<div className="status-indicator"></div>
 						<div className="user-info">
-							<span className="user-name">Aldi Yusronzhar</span>
+							<span className="user-name">
+								{selectedFriendId
+									? friendsData.find((friend) => friend.id === selectedFriendId)
+											?.name
+									: "Select a friend"}
+							</span>
 						</div>
 						<div className="status-container">
 							<div className="status-dot">○</div>
@@ -199,33 +232,44 @@ export default function Chat({}: ChatProps) {
 					</section>
 					<div className="separator"></div>
 					<section className="message-section">
-						<div className="messages">
-							{messages.map((message, index) => (
-								<div
-									key={index}
-									className={`${
-										message.receiverID === userID
-											? "other-message"
-											: "my-message"
-									}`}
-								>
-									{message.text.trim() !== "" && (
-										<>
-											<p className="message">{message.text}</p>
-											<span
-												className={`time ${
-													message.receiverID === userID
-														? "my-message-time"
-														: "other-message-time"
-												}`}
-											>
-												{formatTimestamp(message.timestamp)}
-											</span>
-										</>
-									)}
-								</div>
-							))}
-						</div>
+						{selectedFriendId ? (
+							<div className="messages">
+								{messages.map((message, index) => (
+									<div
+										key={index}
+										className={`${
+											message.receiverID === userID
+												? "other-message"
+												: "my-message"
+										}`}
+									>
+										{message.text.trim() !== "" && (
+											<>
+												<p className="message">{message.text}</p>
+												<span
+													className={`time ${
+														message.receiverID === userID
+															? "my-message-time"
+															: "other-message-time"
+													}`}
+												>
+													{formatTimestamp(message.timestamp)}
+												</span>
+											</>
+										)}
+									</div>
+								))}
+							</div>
+						) : (
+							<div className="indicator-msg">
+								<Image
+									src={NexText}
+									alt="nextext-mascot"
+									className="mascot"
+								></Image>
+								<h1>Start Texting Your Friend...</h1>
+							</div>
+						)}
 					</section>
 
 					<section className="message-input-section">
