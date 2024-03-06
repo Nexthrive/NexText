@@ -18,21 +18,18 @@ body {
 }
 
 .inbox {
-	min-width: 20%;
+	width: 30%;
 	margin-top: 60px;
-	// margin-left: 10%;
 	display: flex;
-	flex-direction: column;
 	align-items: center;
-	align-self: flex-start;
 	width: 100%;
 	margin-bottom: 10px;
+  justify-content: space-between;
+  padding: 0px 10%;
 }
 
 .btn-inbox {
-	// align-items: center;
 	align-self: center;
-	margin-right: 190px;
 	color: #fff;
 	padding: 5px;
 	border-radius: 10px;
@@ -97,7 +94,6 @@ body {
 }
 
 .separator {
-	// background-color: #e9e9e9;
 	min-height: 1px;
 	width: 100%;
 }
@@ -105,16 +101,11 @@ body {
 .message-section {
 	border-left: 1px solid #222;
 	width: 100%;
-	height: fit-content;
+	// height: fit-content;
 	flex-direction: column;
 	padding: 0 49px;
 	padding-top: 100px;
 	margin-bottom: 100px;
-	// background: radial-gradient(circle at 25% 25%, transparent 14%, #e5e5e5 15%, #e5e5e5 20%, transparent 21%, transparent 100%), radial-gradient(circle at 75% 75%, transparent 11%, #e5e5e5 12%, #e5e5e5 17%, transparent 18%);
-	// background-size: 1em 1em;
-	// background-color: #ffffff;
-	// opacity: 1;
-	// background-image: url(../../../../public/bg-patern.png);
 	background-size: 100%;
 	background-color: #000;
 }
@@ -274,6 +265,16 @@ body {
 
 .add-friend {
 	background-color: #52398e;
+	padding-bottom: 2px;
+	padding-top: 3px;
+	padding-right: 10px;
+	padding-left: 10px;
+	color: #fff;
+	border-radius: 100px;
+}
+
+.friend-request {
+  background-color: #222;
 	padding-bottom: 2px;
 	padding-top: 3px;
 	padding-right: 10px;
